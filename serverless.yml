@@ -1,0 +1,122 @@
+service: shorturl
+
+provider:
+  name: aws
+  stage: dev
+  region: us-east-1
+  httpApi:
+    authorizers:
+      authorizer:
+        type: jwt
+        identitySource: $request.header.Authorization
+        issuerUrl: 
+          Fn::Join:
+            - ""
+            - - "https://cognito-idp."
+              - "${self:provider.region}"
+              - ".amazonaws.com/"
+              - Ref: CognitoUserPool
+        audience:
+          - Ref: CognitoUserPoolWebClient
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - 'dynamodb:PutItem'
+            - 'dynamodb:Query'
+          Resource: '*'
+
+functions:
+  autoconfirm:
+    handler: src/lambda/autoconfirm.handler
+    name: ${sls:stage}-autoconfirm
+    enabled: false
+    events:
+      - cognitoUserPool:
+          pool: CognitoUserPool
+          trigger: PreSignUp
+  shorturl:
+    handler: src/lambda/shorturl.handler
+    name: ${sls:stage}-shorturl
+    environment:
+      USER_POOL_ID:
+        Ref: CognitoUserPool
+      USER_POOL_WEB_CLIENT_ID:
+        Ref: CognitoUserPoolWebClient
+    events:
+      - httpApi:
+          method: 'GET'
+          path: /{short+}
+      - httpApi:
+          method: 'GET'
+          path: /
+      - httpApi:
+          method: 'PUT'
+          path: /
+          authorizer:
+            name: authorizer
+
+plugins:
+  - serverless-disable-functions
+  - serverless-export-env
+  - serverless-plugin-typescript
+  - serverless-dynamodb-local
+  - serverless-offline
+
+custom:
+  dynamodb:
+    stages:
+      - dev
+    start:
+      port: 8000
+      inMemory: true
+      heapInitial: 200m
+      heapMax: 1g
+      migrate: true
+  serverless-offline:
+    httpPort: 4000
+
+resources:
+  Resources:
+    ShortUrlTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: shortUrl
+        AttributeDefinitions:
+          - AttributeName: shortcode
+            AttributeType: S
+          - AttributeName: expires_at
+            AttributeType: N
+        KeySchema:
+          - AttributeName: shortcode
+            KeyType: HASH
+          - AttributeName: expires_at
+            KeyType: RANGE
+        TimeToLiveSpecification:
+          AttributeName: expires_at
+          Enabled: true
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+    CognitoUserPool:
+      Type: AWS::Cognito::UserPool
+      Properties:
+        UserPoolName: ${sls:stage}-${self:service}
+        UsernameAttributes:
+          - email
+        AutoVerifiedAttributes:
+          - email
+        Schema:
+          - AttributeDataType: String
+            Name: email
+            Required: true
+
+    CognitoUserPoolWebClient:
+      Type: AWS::Cognito::UserPoolClient
+      Properties:
+        ClientName: ${sls:stage}-${self:service}-userpool-client
+        UserPoolId:
+          Ref: CognitoUserPool
+        GenerateSecret: false

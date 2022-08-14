@@ -1,0 +1,6 @@
+.dynamodb
+node_modules
+.build
+coverage
+shorturl
+.serverless

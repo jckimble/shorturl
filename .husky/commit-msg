@@ -1,0 +1,6 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+npx --no -- commitlint --edit "${1}"
+npm audit --omit=dev
+npx depcheck --ignores @commitlint/cli,@commitlint/config-conventional,@shelf/jest-dynamodb,@testing-library/jest-dom,babel-jest

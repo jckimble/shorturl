@@ -1,0 +1,106 @@
+{
+  "name": "@jckimble/shorturl",
+  "version": "0.0.0",
+  "description": "A quick shorturl website & cli using aws lambda and dynamodb",
+  "bin": {
+    "shorturl": "./.build/src/cmd/cli.js"
+  },
+  "pkg": {
+    "scripts": "./.build/src/cmd/cli.js"
+  },
+  "scripts": {
+    "package": "pkg . --output shorturl",
+    "build": "tsc",
+    "start": "serverless offline start",
+    "test": "jest --no-cache --runInBand",
+    "test:cov": "jest --coverage --no-cache --runInBand",
+    "deploy": "serverless deploy",
+    "release": "semantic-release",
+    "postinstall": "husky install",
+    "prepublishOnly": "pinst --disable",
+    "postpublish": "pinst --enable"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jckimble/shorturl.git"
+  },
+  "keywords": [
+    "shorturl",
+    "aws",
+    "lambda",
+    "dynamodb"
+  ],
+  "author": "James C Kimble",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jckimble/shorturl/issues"
+  },
+  "homepage": "https://github.com/jckimble/shorturl#readme",
+  "babel": {
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "targets": {
+            "node": "current"
+          }
+        }
+      ],
+      "@babel/preset-typescript"
+    ]
+  },
+  "jest": {
+    "preset": "@shelf/jest-dynamodb",
+    "collectCoverageFrom": [
+      "src/**/*.ts"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 70,
+        "functions": 80,
+        "lines": 80,
+        "statements": 80
+      }
+    }
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "devDependencies": {
+    "@babel/core": "^7.18.10",
+    "@babel/preset-env": "^7.18.10",
+    "@babel/preset-typescript": "^7.18.6",
+    "@commitlint/cli": "^17.0.3",
+    "@commitlint/config-conventional": "^17.0.3",
+    "@shelf/jest-dynamodb": "^3.2.0",
+    "@testing-library/jest-dom": "^5.16.4",
+    "@types/aws-lambda": "^8.10.101",
+    "@types/valid-url": "^1.0.3",
+    "aws-lambda": "^1.0.7",
+    "babel-jest": "^28.1.3",
+    "husky": "^8.0.1",
+    "jest": "^28.1.3",
+    "jest-mock-axios": "^4.6.1",
+    "pinst": "^3.0.0",
+    "pkg": "^5.8.0",
+    "semantic-release": "^19.0.3",
+    "serverless": "^3.21.0",
+    "serverless-disable-functions": "^1.0.0",
+    "serverless-dynamodb-local": "^0.2.40",
+    "serverless-export-env": "^2.2.0",
+    "serverless-offline": "^9.1.6",
+    "serverless-plugin-typescript": "^2.1.2",
+    "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "@lifeomic/axios-fetch": "^3.0.0",
+    "amazon-cognito-identity-js": "^5.2.10",
+    "aws-sdk": "^2.1189.0",
+    "axios": "^0.27.2",
+    "commander": "^9.4.0",
+    "crc-32": "^1.2.2",
+    "valid-url": "^1.0.9"
+  }
+}
