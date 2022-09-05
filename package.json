@@ -90,7 +90,7 @@
     "serverless-disable-functions": "^1.0.0",
     "serverless-dynamodb-local": "^0.2.40",
     "serverless-export-env": "^2.2.0",
-    "serverless-offline": "^9.1.6",
+    "serverless-offline": "^10.0.0",
     "serverless-plugin-typescript": "^2.1.2",
     "typescript": "^4.7.4"
   },
