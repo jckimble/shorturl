@@ -88,7 +88,7 @@
     "semantic-release": "^19.0.3",
     "serverless": "^3.21.0",
     "serverless-disable-functions": "^1.0.0",
-    "serverless-dynamodb-local": "^0.2.40",
+    "serverless-dynamodb-local": "^1.0.2",
     "serverless-export-env": "^2.2.0",
     "serverless-offline": "^11.0.1",
     "serverless-plugin-typescript": "^2.1.2",
