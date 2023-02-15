@@ -13,7 +13,7 @@ npm install @jckimble/shorturl
 
 ## Usage
 
-Below is a simple example of how to use. An working example is on[https://surl.jckimble.com](https://surl.jckimble.com)
+Below is a simple example of how to use
 
 ### Self-Hosted
 
