@@ -75,7 +75,7 @@
     "@commitlint/cli": "^21.0.0",
     "@commitlint/config-conventional": "^21.0.0",
     "@shelf/jest-dynamodb": "^4.0.2",
-    "@testing-library/jest-dom": "^6.0.0",
+    "@testing-library/jest-dom": "^7.0.0",
     "@types/aws-lambda": "^8.10.101",
     "@types/valid-url": "^1.0.3",
     "aws-lambda": "^1.0.7",
